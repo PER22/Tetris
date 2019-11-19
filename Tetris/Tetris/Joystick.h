@@ -2,6 +2,12 @@
 #define JOYSTICK_H_
 
 typedef enum Direction{NONE, LEFT, RIGHT, UP, DOWN} Direction;
+	
+#define JOYSTICK_LIMIT_LEFT 100
+#define JOYSTICK_LIMIT_RIGHT 1000
+#define JOYSTICK_LIMIT_UP 100
+#define JOYSTICK_LIMIT_DOWN 1000
+
 
 typedef struct Joystick_Frame {
 	

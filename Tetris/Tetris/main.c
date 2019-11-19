@@ -26,9 +26,12 @@ Joystick_Frame* nextJoystickFramePtr;
 
 
 void testDisplayJoystickADC(){
+	//I know this code is ugly, its really just a test bench to see 
+	//what the X and Y ranges from the joystick and the logic value 
+	//from its click.
 	
 	//display X
-	unsigned char tmpADC = currentJoystickFramePtr->raw_x;
+	unsigned short tmpADC = currentJoystickFramePtr->raw_x;
 	LCD_msg[3] = (tmpADC % 10) + '0';
 	tmpADC /= 10;
 	LCD_msg[2] = (tmpADC % 10) + '0';
@@ -37,7 +40,6 @@ void testDisplayJoystickADC(){
 	tmpADC /= 10;
 	LCD_msg[0] = (tmpADC % 10)+ '0';
 	LCD_msg[4] = ' ';
-	
 	
 	//display Y
 	tmpADC = currentJoystickFramePtr->raw_y;
@@ -49,11 +51,12 @@ void testDisplayJoystickADC(){
 	tmpADC /= 10;
 	LCD_msg[5] = (tmpADC % 10)+ '0';
 	LCD_msg[9] = ' ';
-	LCD_msg[10] = currentJoystickFramePtr->click ? '1' :  '0';
 	
+	//display click
+	LCD_msg[10] = currentJoystickFramePtr->click ? '1' :  '0';
 	LCD_msg[11] = '\0';
 	
-	
+	//Write to LCD
 	LCD_DisplayString(1, &LCD_msg);
 
 }
@@ -142,12 +145,12 @@ int main(void)
 	LCD_init();
 	currentJoystickFramePtr = (Joystick_Frame*) malloc(sizeof(Joystick_Frame));
 	nextJoystickFramePtr = (Joystick_Frame*) malloc(sizeof(Joystick_Frame));
-	
+	//timing
 	TimerSet(250);
 	TimerOn();
     while (1){
 		Joystick_Tick();
-		testDisplayJoystickADC();
+		//testDisplayJoystickADC();
 		while(!TimerFlag);
 		TimerFlag = 0;
     }
