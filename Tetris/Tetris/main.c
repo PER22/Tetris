@@ -1,14 +1,14 @@
 #include <avr/io.h>
 #include <avr/interrupt.h> 
+
+#include <stdlib.h> //for malloc()
+
 #include "io.h" //Code for the LCD
 #include "Joystick.h"	//Joystick_Frame struct, methods/SM's 
 						//relating to its reading, reporting, and conversion
 						//to desired logical values;
-
-
-
-
-
+#include "SoundEffects.h"
+						
 volatile unsigned char TimerFlag = 0;
 unsigned long _avr_timer_M = 1;
 unsigned long _avr_timer_cntcurr = 0;
@@ -23,6 +23,11 @@ char LCD_msg[33];
 
 Joystick_Frame* currentJoystickFramePtr;
 Joystick_Frame* nextJoystickFramePtr;
+
+SoundEffect* Effects[6];
+
+
+
 
 
 void testDisplayJoystickADC(){
@@ -131,8 +136,8 @@ int main(void)
 	DDRA = 0x00;
 	PORTA = 0xFF;
 	
-	//DDRB = 0x______
-	//PORTB = 0x________
+	DDRB = 0xFF;
+	PORTB = 0x00;
 	
 	DDRC = 0xFF;
 	PORTC = 0x00;
@@ -145,12 +150,29 @@ int main(void)
 	LCD_init();
 	currentJoystickFramePtr = (Joystick_Frame*) malloc(sizeof(Joystick_Frame));
 	nextJoystickFramePtr = (Joystick_Frame*) malloc(sizeof(Joystick_Frame));
+	
+	//test sound effects, in the future these will be replaced 
+	//with the sound effects for each action/event
+	for(int i = 0; i < 6; i++){
+		//initialize array of SoundEffects
+		Effects[i] = (SoundEffect*) malloc(sizeof(SoundEffect));	
+		Effects[i]->length = 10;
+		//Initialize each of their pitch arrays
+		Effects[i]->pitches_ptr = (double*) malloc(Effects[i]->length * sizeof(double));
+		for(int j = 0; j < Effects[i]->length; j++){
+			Effects[i]->pitches_ptr[j] = i*150.0; 
+		}
+	}
+	
 	//timing
-	TimerSet(250);
+	TimerSet(100);
 	TimerOn();
     while (1){
 		Joystick_Tick();
-		//testDisplayJoystickADC();
+		//testDisplayJoystickADC(); //Working and not needed
+		//Gamestate_Tick(); //TODO
+		//
+		//SoundEffect_Tick();
 		while(!TimerFlag);
 		TimerFlag = 0;
     }
