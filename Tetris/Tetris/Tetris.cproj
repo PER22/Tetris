@@ -137,6 +137,9 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="SoundEffects.c">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="SoundEffects.h">
       <SubType>compile</SubType>
     </Compile>

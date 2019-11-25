@@ -6,6 +6,15 @@
 #define SET_BIT(p,i) ((p) |= (1 << (i)))
 #define CLR_BIT(p,i) ((p) &= ~(1 << (i)))
 #define GET_BIT(p,i) ((p) & (1 << (i)))
+
+#define SHIFTREG_RCLK_PIN 5 
+#define SHIFTREG_SRCLK_PIN 7
+#define SHIFTREG_SCLR_PIN 0
+#define SHIFTREG_DATA1_PIN 0
+#define SHIFTREG_DATA2_PIN 1
+#define SHIFTREG_DATA3_PIN 2
+#define SHIFTREG_DATA4_PIN 3
+
           
 /*-------------------------------------------------------------------------*/
 
@@ -125,3 +134,64 @@ void PWM_off(){
 	TCCR3A = 0x00;
 	TCCR3B = 0x00;
 }
+
+unsigned char tempB;
+unsigned char tempD = 0x00;
+
+void writetoAll16BitShiftRegisters(unsigned short data1, unsigned short data2, unsigned short data3, unsigned short data4){
+
+	//while writing data to register, RCLK is held low, when it goes high values are 
+	//latched to the storage register and pins Q7:0.
+	PORTB &= ~(1 << SHIFTREG_RCLK_PIN);
+		
+	//Now serial write cycle begins.
+	//When SRCLK goes from 0 to 1, the DATA# 
+	//line's value shifts into the shift register. 
+	//Looped 16x from MSB to LSB.
+			
+	for (int i = 15; i >=0; i--){
+		
+		//1 data bit is written to each shift register and the clock is set high.
+		unsigned char bitToWrite =  (unsigned char)((data1 >> i) & 0x0001 );
+		if(bitToWrite){PORTB |= (bitToWrite << SHIFTREG_DATA1_PIN);}
+		else{PORTB &= ~(1 << SHIFTREG_DATA1_PIN);}
+		
+		bitToWrite =  (unsigned char)((data2 >> i) & 0x0001 );
+		if(bitToWrite){PORTB |= (bitToWrite << SHIFTREG_DATA2_PIN);}
+		else{PORTB &= ~(1 << SHIFTREG_DATA2_PIN);}
+		
+		bitToWrite =  (unsigned char)((data3 >> i) & 0x0001 );
+		if(bitToWrite){PORTB |= (bitToWrite << SHIFTREG_DATA3_PIN);}
+		else{PORTB &= ~(1 << SHIFTREG_DATA3_PIN);}
+		
+		bitToWrite =  (unsigned char)((data4 >> i) & 0x0001 );
+		if(bitToWrite){PORTB |= (bitToWrite << SHIFTREG_DATA4_PIN);}
+		else{PORTB &= ~(1 << SHIFTREG_DATA4_PIN);}
+			
+		for(int k = 0; k < 2500; k++){
+			asm("nop");
+		}
+		
+		//Tick Clock, wait, tick other direction
+		PORTB |= (1<< SHIFTREG_SRCLK_PIN);
+		for(int k = 0; k < 2500; k++){
+			asm("nop");
+		}
+		PORTB &= ~(1 << SHIFTREG_SRCLK_PIN);
+		for(int k = 0; k < 2500; k++){
+			asm("nop");
+		}
+		
+		
+	}
+	
+	//latch values form shift register to output pins 
+	//after each of the 16 bits has been looped through;
+	PORTB |= (1<< SHIFTREG_RCLK_PIN);
+
+}
+
+
+
+
+

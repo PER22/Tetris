@@ -19,4 +19,9 @@ void set_PWM(double frequency);
 void PWM_on();
 void PWM_off();
 
+void writetoAll16BitShiftRegisters(unsigned short data1,unsigned short data2, unsigned short data3, unsigned short data4
+);
+
+void ShiftReg_init();
+void ShiftReg_clr();
 #endif

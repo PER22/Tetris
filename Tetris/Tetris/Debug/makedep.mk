@@ -8,3 +8,5 @@ Joystick.c
 
 main.c
 
+SoundEffects.c
+

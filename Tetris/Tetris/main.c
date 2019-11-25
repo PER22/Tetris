@@ -148,31 +148,33 @@ int main(void)
 	//Initializations
 	ADC_init();
 	LCD_init();
+	
 	currentJoystickFramePtr = (Joystick_Frame*) malloc(sizeof(Joystick_Frame));
 	nextJoystickFramePtr = (Joystick_Frame*) malloc(sizeof(Joystick_Frame));
 	
 	//test sound effects, in the future these will be replaced 
 	//with the sound effects for each action/event
-	for(int i = 0; i < 6; i++){
-		//initialize array of SoundEffects
-		Effects[i] = (SoundEffect*) malloc(sizeof(SoundEffect));	
-		Effects[i]->length = 10;
-		//Initialize each of their pitch arrays
-		Effects[i]->pitches_ptr = (double*) malloc(Effects[i]->length * sizeof(double));
-		for(int j = 0; j < Effects[i]->length; j++){
-			Effects[i]->pitches_ptr[j] = i*150.0; 
-		}
-	}
+// 	for(int i = 0; i < 6; i++){
+// 		//initialize array of SoundEffects
+// 		Effects[i] = (SoundEffect*) malloc(sizeof(SoundEffect));	
+// 		Effects[i]->length = 10;
+// 		//Initialize each of their pitch arrays
+// 		Effects[i]->pitches_ptr = (double*) malloc(Effects[i]->length * sizeof(double));
+// 		for(int j = 0; j < Effects[i]->length; j++){
+// 			Effects[i]->pitches_ptr[j] = i*150.0; 
+// 		}
+// 	}
 	
 	//timing
 	TimerSet(100);
 	TimerOn();
     while (1){
 		Joystick_Tick();
-		//testDisplayJoystickADC(); //Working and not needed
+		testDisplayJoystickADC(); //Working and not needed
 		//Gamestate_Tick(); //TODO
 		//
 		//SoundEffect_Tick();
+		writetoAll16BitShiftRegisters(0xFFFF, 0xFFFF,0xFFFF,0xFFFF);
 		while(!TimerFlag);
 		TimerFlag = 0;
     }
