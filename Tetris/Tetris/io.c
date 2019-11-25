@@ -168,24 +168,24 @@ void writetoAll16BitShiftRegisters(unsigned short data1, unsigned short data2, u
 		if(bitToWrite){PORTB |= (bitToWrite << SHIFTREG_DATA4_PIN);}
 		else{PORTB &= ~(1 << SHIFTREG_DATA4_PIN);}
 			
-		for(int k = 0; k < 2500; k++){
+		for(int k = 0; k < 10; k++){
 			asm("nop");
 		}
 		
 		//Tick Clock, wait, tick other direction
 		PORTB |= (1<< SHIFTREG_SRCLK_PIN);
-		for(int k = 0; k < 2500; k++){
+		for(int k = 0; k < 10; k++){
 			asm("nop");
 		}
 		PORTB &= ~(1 << SHIFTREG_SRCLK_PIN);
-		for(int k = 0; k < 2500; k++){
+		for(int k = 0; k < 10; k++){
 			asm("nop");
 		}
 		
 		
 	}
 	
-	//latch values form shift register to output pins 
+	//latch values from shift register to output pins 
 	//after each of the 16 bits has been looped through;
 	PORTB |= (1<< SHIFTREG_RCLK_PIN);
 

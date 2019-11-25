@@ -25,9 +25,9 @@ Idx Name          Size      VMA       LMA       File off  Algn
                   CONTENTS, READONLY, DEBUGGING
  10 .debug_str    000006c6  00000000  00000000  00003510  2**0
                   CONTENTS, READONLY, DEBUGGING
- 11 .debug_loc    00000720  00000000  00000000  00003bd6  2**0
+ 11 .debug_loc    0000070e  00000000  00000000  00003bd6  2**0
                   CONTENTS, READONLY, DEBUGGING
- 12 .debug_ranges 000000f0  00000000  00000000  000042f6  2**0
+ 12 .debug_ranges 000000f0  00000000  00000000  000042e4  2**0
                   CONTENTS, READONLY, DEBUGGING
 
 Disassembly of section .text:
@@ -399,13 +399,13 @@ void writetoAll16BitShiftRegisters(unsigned short data1, unsigned short data2, u
 	//Looped 16x from MSB to LSB.
 			
 	for (int i = 15; i >=0; i--){
- 24a:	e4 ec       	ldi	r30, 0xC4	; 196
- 24c:	f9 e0       	ldi	r31, 0x09	; 9
+ 24a:	ea e0       	ldi	r30, 0x0A	; 10
+ 24c:	f0 e0       	ldi	r31, 0x00	; 0
 		bitToWrite =  (unsigned char)((data4 >> i) & 0x0001 );
 		if(bitToWrite){PORTB |= (bitToWrite << SHIFTREG_DATA4_PIN);}
 		else{PORTB &= ~(1 << SHIFTREG_DATA4_PIN);}
 			
-		for(int k = 0; k < 2500; k++){
+		for(int k = 0; k < 10; k++){
 			asm("nop");
  24e:	00 00       	nop
  250:	31 97       	sbiw	r30, 0x01	; 1
@@ -414,7 +414,7 @@ void writetoAll16BitShiftRegisters(unsigned short data1, unsigned short data2, u
 		if(bitToWrite){PORTB |= (bitToWrite << SHIFTREG_DATA4_PIN);}
 		else{PORTB &= ~(1 << SHIFTREG_DATA4_PIN);}
 			
-		for(int k = 0; k < 2500; k++){
+		for(int k = 0; k < 10; k++){
  252:	e9 f7       	brne	.-6      	; 0x24e <writetoAll16BitShiftRegisters+0x96>
 			asm("nop");
 		}
@@ -422,9 +422,9 @@ void writetoAll16BitShiftRegisters(unsigned short data1, unsigned short data2, u
 		//Tick Clock, wait, tick other direction
 		PORTB |= (1<< SHIFTREG_SRCLK_PIN);
  254:	2f 9a       	sbi	0x05, 7	; 5
- 256:	e4 ec       	ldi	r30, 0xC4	; 196
- 258:	f9 e0       	ldi	r31, 0x09	; 9
-		for(int k = 0; k < 2500; k++){
+ 256:	ea e0       	ldi	r30, 0x0A	; 10
+ 258:	f0 e0       	ldi	r31, 0x00	; 0
+		for(int k = 0; k < 10; k++){
 			asm("nop");
  25a:	00 00       	nop
  25c:	31 97       	sbiw	r30, 0x01	; 1
@@ -433,24 +433,24 @@ void writetoAll16BitShiftRegisters(unsigned short data1, unsigned short data2, u
 		
 		//Tick Clock, wait, tick other direction
 		PORTB |= (1<< SHIFTREG_SRCLK_PIN);
-		for(int k = 0; k < 2500; k++){
+		for(int k = 0; k < 10; k++){
  25e:	e9 f7       	brne	.-6      	; 0x25a <writetoAll16BitShiftRegisters+0xa2>
 			asm("nop");
 		}
 		PORTB &= ~(1 << SHIFTREG_SRCLK_PIN);
  260:	2f 98       	cbi	0x05, 7	; 5
- 262:	e4 ec       	ldi	r30, 0xC4	; 196
- 264:	f9 e0       	ldi	r31, 0x09	; 9
-		for(int k = 0; k < 2500; k++){
+ 262:	ea e0       	ldi	r30, 0x0A	; 10
+ 264:	f0 e0       	ldi	r31, 0x00	; 0
+		for(int k = 0; k < 10; k++){
 			asm("nop");
  266:	00 00       	nop
  268:	31 97       	sbiw	r30, 0x01	; 1
 		PORTB |= (1<< SHIFTREG_SRCLK_PIN);
-		for(int k = 0; k < 2500; k++){
+		for(int k = 0; k < 10; k++){
 			asm("nop");
 		}
 		PORTB &= ~(1 << SHIFTREG_SRCLK_PIN);
-		for(int k = 0; k < 2500; k++){
+		for(int k = 0; k < 10; k++){
  26a:	e9 f7       	brne	.-6      	; 0x266 <writetoAll16BitShiftRegisters+0xae>
 	//Now serial write cycle begins.
 	//When SRCLK goes from 0 to 1, the DATA# 
@@ -464,7 +464,7 @@ void writetoAll16BitShiftRegisters(unsigned short data1, unsigned short data2, u
 		
 	}
 	
-	//latch values form shift register to output pins 
+	//latch values from shift register to output pins 
 	//after each of the 16 bits has been looped through;
 	PORTB |= (1<< SHIFTREG_RCLK_PIN);
  272:	2d 9a       	sbi	0x05, 5	; 5

@@ -726,11 +726,11 @@ END GROUP
  .debug_str     0x000005b0      0x116 main.o
                                 0x37d (size before relaxing)
 
-.debug_loc      0x00000000      0x720
+.debug_loc      0x00000000      0x70e
  *(.debug_loc)
- .debug_loc     0x00000000      0x52e io.o
- .debug_loc     0x0000052e       0x8d Joystick.o
- .debug_loc     0x000005bb      0x165 main.o
+ .debug_loc     0x00000000      0x51c io.o
+ .debug_loc     0x0000051c       0x8d Joystick.o
+ .debug_loc     0x000005a9      0x165 main.o
 
 .debug_macinfo
  *(.debug_macinfo)
