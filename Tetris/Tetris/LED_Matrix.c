@@ -64,9 +64,8 @@ void pulseColumn(unsigned char column, RGB_8x16_Frame frame){
 	}
 	//matrix 2
 	for(int i = 0; i < 8; i++){
-		if(frame.frame[column][i+8] == 0){continue;}
 		//check red green blue
-		else if(frame.frame[column][i+8] & (1 << RGB_RED_BIT)){register2 &= ~(1 << i);}
+		if(frame.frame[column][i+8] & (1 << RGB_RED_BIT)){register2 &= ~(1 << i);}
 	
 		else if(frame.frame[column][i+8] & (1 << RGB_GREEN_BIT)){register4 &= ~(1 << i); }
 

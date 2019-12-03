@@ -164,14 +164,26 @@ int main(void)
 	//TEST CODE
 	for (int i= 0; i < 8; i++){
 		for(int j = 0; j < 16; j++){
-			if((i + j) % 2 == 0){
-				current_RGB_FramePtr->frame[i][j] = (1 << RGB_BLUE_BIT);	
+			if((i+j) % 2 == 0){
+				current_RGB_FramePtr->frame[i][j] = (1 << RGB_BLUE_BIT);
 			}
 			else{
-				current_RGB_FramePtr->frame[i][j] = (1 << RGB_RED_BIT);	
+				current_RGB_FramePtr->frame[i][j] = (1 << RGB_GREEN_BIT);
 			}
-		}		
+		}
 	}
+	for (int i= 0; i < 8; i++){
+		for(int j = 0; j < 16; j++){
+			if((i+j) % 2 == 0){
+				next_RGB_FramePtr->frame[i][j] = (1 << RGB_GREEN_BIT);
+			}
+			else{
+				next_RGB_FramePtr->frame[i][j] = (1 << RGB_BLUE_BIT);
+			}
+		}
+	}
+	
+	
 	
 	
 	
@@ -192,6 +204,7 @@ int main(void)
 	//timing
 	TimerSet(1);
 	unsigned int cnt = 0;
+	unsigned int cnt2 = 0;
 	TimerOn();
     while (1){
 	//	Joystick_Tick();
@@ -199,6 +212,12 @@ int main(void)
 		//Gamestate_Tick(); //TODO
 		
 		//SoundEffect_Tick();
+		if(cnt2 == 1000){ RGB_8x16_Frame tmpFrame = *current_RGB_FramePtr;
+			*current_RGB_FramePtr = *next_RGB_FramePtr;
+			*next_RGB_FramePtr = tmpFrame;
+			cnt2 = 0;}
+		
+		cnt2++;	
 		if(cnt == 8){pulseColumn(0, *current_RGB_FramePtr);cnt = 0;}
 		else{pulseColumn(cnt++, *current_RGB_FramePtr);}
 		
