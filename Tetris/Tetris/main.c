@@ -8,6 +8,7 @@
 						//relating to its reading, reporting, and conversion
 						//to desired logical values;
 #include "SoundEffects.h"
+#include "LED_Matrix.h"
 						
 volatile unsigned char TimerFlag = 0;
 unsigned long _avr_timer_M = 1;
@@ -23,6 +24,10 @@ char LCD_msg[33];
 
 Joystick_Frame* currentJoystickFramePtr;
 Joystick_Frame* nextJoystickFramePtr;
+
+RGB_8x16_Frame* current_RGB_FramePtr;
+RGB_8x16_Frame* next_RGB_FramePtr;
+
 
 SoundEffect* Effects[6];
 
@@ -45,6 +50,7 @@ void testDisplayJoystickADC(){
 	tmpADC /= 10;
 	LCD_msg[0] = (tmpADC % 10)+ '0';
 	LCD_msg[4] = ' ';
+	
 	
 	//display Y
 	tmpADC = currentJoystickFramePtr->raw_y;
@@ -152,6 +158,24 @@ int main(void)
 	currentJoystickFramePtr = (Joystick_Frame*) malloc(sizeof(Joystick_Frame));
 	nextJoystickFramePtr = (Joystick_Frame*) malloc(sizeof(Joystick_Frame));
 	
+	current_RGB_FramePtr = (RGB_8x16_Frame*) malloc(sizeof(RGB_8x16_Frame));
+	next_RGB_FramePtr = (RGB_8x16_Frame*) malloc(sizeof(RGB_8x16_Frame));
+	
+	//TEST CODE
+	for (int i= 0; i < 8; i++){
+		for(int j = 0; j < 16; j++){
+			if((i + j) % 2 == 0){
+				current_RGB_FramePtr->frame[i][j] = (1 << RGB_BLUE_BIT);	
+			}
+			else{
+				current_RGB_FramePtr->frame[i][j] = (1 << RGB_RED_BIT);	
+			}
+		}		
+	}
+	
+	
+	
+	
 	//test sound effects, in the future these will be replaced 
 	//with the sound effects for each action/event
 // 	for(int i = 0; i < 6; i++){
@@ -166,15 +190,18 @@ int main(void)
 // 	}
 	
 	//timing
-	TimerSet(100);
+	TimerSet(1);
+	unsigned int cnt = 0;
 	TimerOn();
     while (1){
-		Joystick_Tick();
-		testDisplayJoystickADC(); //Working and not needed
+	//	Joystick_Tick();
+	//	testDisplayJoystickADC(); //Working and not needed
 		//Gamestate_Tick(); //TODO
-		//
+		
 		//SoundEffect_Tick();
-		writetoAll16BitShiftRegisters(0xFFFF, 0xFFFF,0xFFFF,0xFFFF);
+		if(cnt == 8){pulseColumn(0, *current_RGB_FramePtr);cnt = 0;}
+		else{pulseColumn(cnt++, *current_RGB_FramePtr);}
+		
 		while(!TimerFlag);
 		TimerFlag = 0;
     }

@@ -34,6 +34,8 @@ c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/..
                               c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr51\libm.a(mulsf3.o) (__mulsf3x)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_exit.o)
                               C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega1284/avr51/crtatmega1284.o (exit)
+c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_tablejump2.o)
+                              LED_Matrix.o (__tablejump2__)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_copy_data.o)
                               main.o (__do_copy_data)
 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_clear_bss.o)
@@ -50,7 +52,10 @@ tempB               0x1               io.o
 nextJoystickFramePtr
                     0x2               main.o
 __brkval            0x2               c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr51\libc.a(malloc.o)
+current_RGB_FramePtr
+                    0x2               main.o
 LCD_msg             0x21              main.o
+next_RGB_FramePtr   0x2               main.o
 currentJoystickFramePtr
                     0x2               main.o
 Effects             0xc               main.o
@@ -63,6 +68,18 @@ Discarded input sections
  .text          0x00000000        0x0 io.o
  .data          0x00000000        0x0 io.o
  .bss           0x00000000        0x0 io.o
+ .text.LCD_ClearScreen
+                0x00000000        0x8 io.o
+ .text.LCD_Cursor
+                0x00000000       0x14 io.o
+ .text.LCD_WriteData
+                0x00000000       0x14 io.o
+ .text.LCD_DisplayString
+                0x00000000       0x38 io.o
+ .text.ADC_channel
+                0x00000000       0x18 io.o
+ .text.ADC_read
+                0x00000000       0x1e io.o
  .text.set_PWM  0x00000000       0xe4 io.o
  .text.PWM_on   0x00000000       0x18 io.o
  .text.PWM_off  0x00000000        0xa io.o
@@ -73,13 +90,34 @@ Discarded input sections
  .text          0x00000000        0x0 Joystick.o
  .data          0x00000000        0x0 Joystick.o
  .bss           0x00000000        0x0 Joystick.o
+ .text.Joystick_Process_Raw
+                0x00000000       0x4c Joystick.o
+ .text.Joystick_Read
+                0x00000000       0x2e Joystick.o
+ .debug_info    0x00000000      0x194 Joystick.o
+ .debug_abbrev  0x00000000       0xfc Joystick.o
+ .debug_loc     0x00000000       0x8d Joystick.o
+ .debug_aranges
+                0x00000000       0x28 Joystick.o
+ .debug_ranges  0x00000000       0x18 Joystick.o
+ .debug_line    0x00000000      0x141 Joystick.o
+ .debug_str     0x00000000      0x229 Joystick.o
+ .comment       0x00000000       0x31 Joystick.o
+ .debug_frame   0x00000000       0x40 Joystick.o
+ .text          0x00000000        0x0 LED_Matrix.o
+ .data          0x00000000        0x0 LED_Matrix.o
+ .bss           0x00000000        0x0 LED_Matrix.o
  .text          0x00000000        0x0 main.o
  .data          0x00000000        0x0 main.o
  .bss           0x00000000        0x0 main.o
+ .text.testDisplayJoystickADC
+                0x00000000      0x268 main.o
  .text.TimerOff
                 0x00000000        0x6 main.o
  .text.TimerISR
                 0x00000000        0x8 main.o
+ .text.Joystick_Tick
+                0x00000000       0x3a main.o
  .bss.myADC     0x00000000        0x2 main.o
  .bss.tmpD      0x00000000        0x1 main.o
  .bss.tmpB      0x00000000        0x1 main.o
@@ -201,6 +239,21 @@ Discarded input sections
                 0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_exit.o)
  .text.libgcc.fixed
                 0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_exit.o)
+ .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_tablejump2.o)
+ .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_tablejump2.o)
+ .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_tablejump2.o)
+ .text.libgcc.mul
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_tablejump2.o)
+ .text.libgcc.div
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_tablejump2.o)
+ .text.libgcc.prologue
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_tablejump2.o)
+ .text.libgcc.builtins
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_tablejump2.o)
+ .text.libgcc.fmul
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_tablejump2.o)
+ .text.libgcc.fixed
+                0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_tablejump2.o)
  .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_copy_data.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_copy_data.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_copy_data.o)
@@ -236,6 +289,8 @@ Discarded input sections
  .text          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_umulhisi3.o)
  .data          0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_umulhisi3.o)
  .bss           0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_umulhisi3.o)
+ .text.libgcc.mul
+                0x00000000       0x1e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_umulhisi3.o)
  .text.libgcc.div
                 0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_umulhisi3.o)
  .text.libgcc   0x00000000        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_umulhisi3.o)
@@ -268,6 +323,7 @@ Address of section .data set to 0x800100
 LOAD C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega1284/avr51/crtatmega1284.o
 LOAD io.o
 LOAD Joystick.o
+LOAD LED_Matrix.o
 LOAD main.o
 LOAD SoundEffects.o
 START GROUP
@@ -379,51 +435,53 @@ END GROUP
 .rela.plt
  *(.rela.plt)
 
-.text           0x00000000      0x918
+.text           0x00000000      0x75c
  *(.vectors)
  .vectors       0x00000000       0x8c C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega1284/avr51/crtatmega1284.o
                 0x00000000                __vector_default
                 0x00000000                __vectors
  *(.vectors)
  *(.progmem.gcc*)
-                0x0000008c                . = ALIGN (0x2)
-                0x0000008c                __trampolines_start = .
+ .progmem.gcc_sw_table.pulseColumn
+                0x0000008c       0x10 LED_Matrix.o
+                0x0000009c                . = ALIGN (0x2)
+                0x0000009c                __trampolines_start = .
  *(.trampolines)
- .trampolines   0x0000008c        0x0 linker stubs
+ .trampolines   0x0000009c        0x0 linker stubs
  *(.trampolines*)
-                0x0000008c                __trampolines_end = .
+                0x0000009c                __trampolines_end = .
  *libprintf_flt.a:*(.progmem.data)
  *libc.a:*(.progmem.data)
  *(.progmem*)
-                0x0000008c                . = ALIGN (0x2)
+                0x0000009c                . = ALIGN (0x2)
  *(.jumptables)
  *(.jumptables*)
  *(.lowtext)
  *(.lowtext*)
-                0x0000008c                __ctors_start = .
+                0x0000009c                __ctors_start = .
  *(.ctors)
-                0x0000008c                __ctors_end = .
-                0x0000008c                __dtors_start = .
+                0x0000009c                __ctors_end = .
+                0x0000009c                __dtors_start = .
  *(.dtors)
-                0x0000008c                __dtors_end = .
+                0x0000009c                __dtors_end = .
  SORT(*)(.ctors)
  SORT(*)(.dtors)
  *(.init0)
- .init0         0x0000008c        0x0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega1284/avr51/crtatmega1284.o
-                0x0000008c                __init
+ .init0         0x0000009c        0x0 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega1284/avr51/crtatmega1284.o
+                0x0000009c                __init
  *(.init0)
  *(.init1)
  *(.init1)
  *(.init2)
- .init2         0x0000008c        0xc C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega1284/avr51/crtatmega1284.o
+ .init2         0x0000009c        0xc C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega1284/avr51/crtatmega1284.o
  *(.init2)
  *(.init3)
  *(.init3)
  *(.init4)
- .init4         0x00000098       0x1a c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_copy_data.o)
-                0x00000098                __do_copy_data
- .init4         0x000000b2       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_clear_bss.o)
-                0x000000b2                __do_clear_bss
+ .init4         0x000000a8       0x1a c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_copy_data.o)
+                0x000000a8                __do_copy_data
+ .init4         0x000000c2       0x10 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_clear_bss.o)
+                0x000000c2                __do_clear_bss
  *(.init4)
  *(.init5)
  *(.init5)
@@ -434,113 +492,85 @@ END GROUP
  *(.init8)
  *(.init8)
  *(.init9)
- .init9         0x000000c2        0x4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega1284/avr51/crtatmega1284.o
+ .init9         0x000000d2        0x4 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega1284/avr51/crtatmega1284.o
  *(.init9)
  *(.text)
- .text          0x000000c6        0x2 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega1284/avr51/crtatmega1284.o
-                0x000000c6                __vector_22
-                0x000000c6                __vector_28
-                0x000000c6                __vector_1
-                0x000000c6                __vector_32
-                0x000000c6                __vector_34
-                0x000000c6                __vector_24
-                0x000000c6                __vector_12
-                0x000000c6                __bad_interrupt
-                0x000000c6                __vector_6
-                0x000000c6                __vector_31
-                0x000000c6                __vector_3
-                0x000000c6                __vector_23
-                0x000000c6                __vector_30
-                0x000000c6                __vector_25
-                0x000000c6                __vector_11
-                0x000000c6                __vector_17
-                0x000000c6                __vector_19
-                0x000000c6                __vector_7
-                0x000000c6                __vector_27
-                0x000000c6                __vector_5
-                0x000000c6                __vector_33
-                0x000000c6                __vector_4
-                0x000000c6                __vector_9
-                0x000000c6                __vector_2
-                0x000000c6                __vector_21
-                0x000000c6                __vector_15
-                0x000000c6                __vector_29
-                0x000000c6                __vector_8
-                0x000000c6                __vector_26
-                0x000000c6                __vector_14
-                0x000000c6                __vector_10
-                0x000000c6                __vector_16
-                0x000000c6                __vector_18
-                0x000000c6                __vector_20
-                0x000000c8                . = ALIGN (0x2)
+ .text          0x000000d6        0x2 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega1284/avr51/crtatmega1284.o
+                0x000000d6                __vector_22
+                0x000000d6                __vector_28
+                0x000000d6                __vector_1
+                0x000000d6                __vector_32
+                0x000000d6                __vector_34
+                0x000000d6                __vector_24
+                0x000000d6                __vector_12
+                0x000000d6                __bad_interrupt
+                0x000000d6                __vector_6
+                0x000000d6                __vector_31
+                0x000000d6                __vector_3
+                0x000000d6                __vector_23
+                0x000000d6                __vector_30
+                0x000000d6                __vector_25
+                0x000000d6                __vector_11
+                0x000000d6                __vector_17
+                0x000000d6                __vector_19
+                0x000000d6                __vector_7
+                0x000000d6                __vector_27
+                0x000000d6                __vector_5
+                0x000000d6                __vector_33
+                0x000000d6                __vector_4
+                0x000000d6                __vector_9
+                0x000000d6                __vector_2
+                0x000000d6                __vector_21
+                0x000000d6                __vector_15
+                0x000000d6                __vector_29
+                0x000000d6                __vector_8
+                0x000000d6                __vector_26
+                0x000000d6                __vector_14
+                0x000000d6                __vector_10
+                0x000000d6                __vector_16
+                0x000000d6                __vector_18
+                0x000000d6                __vector_20
+                0x000000d8                . = ALIGN (0x2)
  *(.text.*)
  .text.delay_ms
-                0x000000c8       0x26 io.o
-                0x000000c8                delay_ms
+                0x000000d8       0x26 io.o
+                0x000000d8                delay_ms
  .text.LCD_WriteCommand
-                0x000000ee       0x12 io.o
-                0x000000ee                LCD_WriteCommand
- .text.LCD_ClearScreen
-                0x00000100        0x6 io.o
-                0x00000100                LCD_ClearScreen
- .text.LCD_Cursor
-                0x00000106       0x10 io.o
-                0x00000106                LCD_Cursor
+                0x000000fe       0x12 io.o
+                0x000000fe                LCD_WriteCommand
  .text.LCD_init
-                0x00000116       0x1e io.o
-                0x00000116                LCD_init
- .text.LCD_WriteData
-                0x00000134       0x12 io.o
-                0x00000134                LCD_WriteData
- .text.LCD_DisplayString
-                0x00000146       0x32 io.o
-                0x00000146                LCD_DisplayString
+                0x00000110       0x1e io.o
+                0x00000110                LCD_init
  .text.ADC_init
-                0x00000178        0xc io.o
-                0x00000178                ADC_init
- .text.ADC_channel
-                0x00000184       0x18 io.o
-                0x00000184                ADC_channel
- .text.ADC_read
-                0x0000019c       0x1c io.o
-                0x0000019c                ADC_read
+                0x0000012e        0xc io.o
+                0x0000012e                ADC_init
  .text.writetoAll16BitShiftRegisters
-                0x000001b8       0xbe io.o
-                0x000001b8                writetoAll16BitShiftRegisters
- .text.Joystick_Process_Raw
-                0x00000276       0x4c Joystick.o
-                0x00000276                Joystick_Process_Raw
- .text.Joystick_Read
-                0x000002c2       0x2a Joystick.o
-                0x000002c2                Joystick_Read
- .text.testDisplayJoystickADC
-                0x000002ec      0x24e main.o
-                0x000002ec                testDisplayJoystickADC
- .text.TimerOn  0x0000053a       0x48 main.o
-                0x0000053a                TimerOn
+                0x0000013a       0xbe io.o
+                0x0000013a                writetoAll16BitShiftRegisters
+ .text.pulseColumn
+                0x000001f8       0xea LED_Matrix.o
+                0x000001f8                pulseColumn
+ .text.TimerOn  0x000002e2       0x48 main.o
+                0x000002e2                TimerOn
  .text.__vector_13
-                0x00000582       0x78 main.o
-                0x00000582                __vector_13
+                0x0000032a       0x78 main.o
+                0x0000032a                __vector_13
  .text.TimerSet
-                0x000005fa       0x22 main.o
-                0x000005fa                TimerSet
- .text.Joystick_Tick
-                0x0000061c       0x36 main.o
-                0x0000061c                Joystick_Tick
- .text.main     0x00000652       0x62 main.o
-                0x00000652                main
- .text.libgcc.mul
-                0x000006b4       0x1e c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_umulhisi3.o)
-                0x000006b4                __umulhisi3
+                0x000003a2       0x22 main.o
+                0x000003a2                TimerSet
+ .text.main     0x000003c4      0x140 main.o
+                0x000003c4                main
+ .text.libgcc   0x00000504       0x12 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_tablejump2.o)
+                0x00000504                __tablejump2__
  .text.avr-libc
-                0x000006d2      0x242 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr51\libc.a(malloc.o)
-                0x000006d2                malloc
-                0x00000802                free
-                0x00000914                . = ALIGN (0x2)
+                0x00000516      0x242 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr51\libc.a(malloc.o)
+                0x00000516                malloc
+                0x00000646                free
+                0x00000758                . = ALIGN (0x2)
  *(.fini9)
- .fini9         0x00000914        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_exit.o)
-                0x00000914                _exit
-                0x00000914                exit
+ .fini9         0x00000758        0x0 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_exit.o)
+                0x00000758                _exit
+                0x00000758                exit
  *(.fini9)
  *(.fini8)
  *(.fini8)
@@ -559,11 +589,11 @@ END GROUP
  *(.fini1)
  *(.fini1)
  *(.fini0)
- .fini0         0x00000914        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_exit.o)
+ .fini0         0x00000758        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/avr51\libgcc.a(_exit.o)
  *(.fini0)
-                0x00000918                _etext = .
+                0x0000075c                _etext = .
 
-.data           0x00800100        0xa load address 0x00000918
+.data           0x00800100        0xa load address 0x0000075c
                 0x00800100                PROVIDE (__data_start, .)
  *(.data)
  .data          0x00800100        0x6 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr51\libc.a(malloc.o)
@@ -582,7 +612,7 @@ END GROUP
                 0x0080010a                _edata = .
                 0x0080010a                PROVIDE (__data_end, .)
 
-.bss            0x0080010a       0x3a
+.bss            0x0080010a       0x3e
                 0x0080010a                PROVIDE (__bss_start, .)
  *(.bss)
  *(.bss*)
@@ -593,24 +623,26 @@ END GROUP
                 0x0080010e        0x1 main.o
                 0x0080010e                TimerFlag
  *(COMMON)
- COMMON         0x0080010f       0x31 main.o
+ COMMON         0x0080010f       0x35 main.o
                 0x0080010f                nextJoystickFramePtr
-                0x00800111                LCD_msg
-                0x00800132                currentJoystickFramePtr
-                0x00800134                Effects
- COMMON         0x00800140        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr51\libc.a(malloc.o)
-                0x00800140                __brkval
-                0x00800142                __flp
-                0x00800144                PROVIDE (__bss_end, .)
-                0x00000918                __data_load_start = LOADADDR (.data)
-                0x00000922                __data_load_end = (__data_load_start + SIZEOF (.data))
+                0x00800111                current_RGB_FramePtr
+                0x00800113                LCD_msg
+                0x00800134                next_RGB_FramePtr
+                0x00800136                currentJoystickFramePtr
+                0x00800138                Effects
+ COMMON         0x00800144        0x4 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr51\libc.a(malloc.o)
+                0x00800144                __brkval
+                0x00800146                __flp
+                0x00800148                PROVIDE (__bss_end, .)
+                0x0000075c                __data_load_start = LOADADDR (.data)
+                0x00000766                __data_load_end = (__data_load_start + SIZEOF (.data))
 
-.noinit         0x00800144        0x0
+.noinit         0x00800148        0x0
                 [!provide]                PROVIDE (__noinit_start, .)
  *(.noinit*)
                 [!provide]                PROVIDE (__noinit_end, .)
-                0x00800144                _end = .
-                0x00800144                PROVIDE (__heap_start, .)
+                0x00800148                _end = .
+                0x00800148                PROVIDE (__heap_start, .)
 
 .eeprom         0x00810000        0x0
  *(.eeprom*)
@@ -653,7 +685,7 @@ END GROUP
  *(.comment)
  .comment       0x00000000       0x30 io.o
                                  0x31 (size before relaxing)
- .comment       0x00000030       0x31 Joystick.o
+ .comment       0x00000030       0x31 LED_Matrix.o
  .comment       0x00000030       0x31 main.o
  .comment       0x00000030       0x31 c:/program files (x86)/atmel/studio/7.0/toolchain/avr8/avr8-gnu-toolchain/bin/../lib/gcc/avr/5.4.0/../../../../avr/lib/avr51\libc.a(malloc.o)
 
@@ -677,60 +709,60 @@ END GROUP
 .debug_sfnames
  *(.debug_sfnames)
 
-.debug_aranges  0x00000000      0x108
+.debug_aranges  0x00000000      0x100
  *(.debug_aranges)
  .debug_aranges
                 0x00000000       0x88 io.o
  .debug_aranges
-                0x00000088       0x28 Joystick.o
+                0x00000088       0x20 LED_Matrix.o
  .debug_aranges
-                0x000000b0       0x58 main.o
+                0x000000a8       0x58 main.o
 
 .debug_pubnames
  *(.debug_pubnames)
 
-.debug_info     0x00000000     0x12cd
+.debug_info     0x00000000     0x135d
  *(.debug_info .gnu.linkonce.wi.*)
  .debug_info    0x00000000      0x792 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega1284/avr51/crtatmega1284.o
  .debug_info    0x00000792      0x4f9 io.o
- .debug_info    0x00000c8b      0x194 Joystick.o
- .debug_info    0x00000e1f      0x4ae main.o
+ .debug_info    0x00000c8b      0x16c LED_Matrix.o
+ .debug_info    0x00000df7      0x566 main.o
 
-.debug_abbrev   0x00000000      0xba0
+.debug_abbrev   0x00000000      0xbc7
  *(.debug_abbrev)
  .debug_abbrev  0x00000000      0x729 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega1284/avr51/crtatmega1284.o
  .debug_abbrev  0x00000729      0x187 io.o
- .debug_abbrev  0x000008b0       0xfc Joystick.o
- .debug_abbrev  0x000009ac      0x1f4 main.o
+ .debug_abbrev  0x000008b0      0x100 LED_Matrix.o
+ .debug_abbrev  0x000009b0      0x217 main.o
 
-.debug_line     0x00000000      0x946
+.debug_line     0x00000000      0x98a
  *(.debug_line .debug_line.* .debug_line_end)
  .debug_line    0x00000000      0x169 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega1284/avr51/crtatmega1284.o
  .debug_line    0x00000169      0x3ea io.o
- .debug_line    0x00000553      0x141 Joystick.o
- .debug_line    0x00000694      0x2b2 main.o
+ .debug_line    0x00000553      0x11b LED_Matrix.o
+ .debug_line    0x0000066e      0x31c main.o
 
-.debug_frame    0x00000000      0x22c
+.debug_frame    0x00000000      0x244
  *(.debug_frame)
  .debug_frame   0x00000000      0x11c io.o
- .debug_frame   0x0000011c       0x40 Joystick.o
- .debug_frame   0x0000015c       0xd0 main.o
+ .debug_frame   0x0000011c       0x48 LED_Matrix.o
+ .debug_frame   0x00000164       0xe0 main.o
 
-.debug_str      0x00000000      0x6c6
+.debug_str      0x00000000      0x73d
  *(.debug_str)
  .debug_str     0x00000000      0x296 C:/Program Files (x86)/Atmel/Studio/7.0/Packs/atmel/ATmega_DFP/1.3.300/gcc/dev/atmega1284/avr51/crtatmega1284.o
  .debug_str     0x00000296      0x289 io.o
                                 0x2e1 (size before relaxing)
- .debug_str     0x0000051f       0x91 Joystick.o
-                                0x229 (size before relaxing)
- .debug_str     0x000005b0      0x116 main.o
-                                0x37d (size before relaxing)
+ .debug_str     0x0000051f       0x6f LED_Matrix.o
+                                0x21b (size before relaxing)
+ .debug_str     0x0000058e      0x1af main.o
+                                0x3b2 (size before relaxing)
 
-.debug_loc      0x00000000      0x70e
+.debug_loc      0x00000000      0xa58
  *(.debug_loc)
  .debug_loc     0x00000000      0x51c io.o
- .debug_loc     0x0000051c       0x8d Joystick.o
- .debug_loc     0x000005a9      0x165 main.o
+ .debug_loc     0x0000051c      0x29e LED_Matrix.o
+ .debug_loc     0x000007ba      0x29e main.o
 
 .debug_macinfo
  *(.debug_macinfo)
@@ -750,11 +782,11 @@ END GROUP
 .debug_pubtypes
  *(.debug_pubtypes)
 
-.debug_ranges   0x00000000       0xf0
+.debug_ranges   0x00000000      0x100
  *(.debug_ranges)
  .debug_ranges  0x00000000       0x90 io.o
- .debug_ranges  0x00000090       0x18 Joystick.o
- .debug_ranges  0x000000a8       0x48 main.o
+ .debug_ranges  0x00000090       0x28 LED_Matrix.o
+ .debug_ranges  0x000000b8       0x48 main.o
 
 .debug_macro
  *(.debug_macro)

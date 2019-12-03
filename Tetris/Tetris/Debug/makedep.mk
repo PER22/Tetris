@@ -6,6 +6,8 @@ io.c
 
 Joystick.c
 
+LED_Matrix.c
+
 main.c
 
 SoundEffects.c

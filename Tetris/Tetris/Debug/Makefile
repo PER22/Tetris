@@ -39,6 +39,7 @@ SUBDIRS :=
 C_SRCS +=  \
 ../io.c \
 ../Joystick.c \
+../LED_Matrix.c \
 ../main.c \
 ../SoundEffects.c
 
@@ -52,24 +53,28 @@ ASM_SRCS +=
 OBJS +=  \
 io.o \
 Joystick.o \
+LED_Matrix.o \
 main.o \
 SoundEffects.o
 
 OBJS_AS_ARGS +=  \
 io.o \
 Joystick.o \
+LED_Matrix.o \
 main.o \
 SoundEffects.o
 
 C_DEPS +=  \
 io.d \
 Joystick.d \
+LED_Matrix.d \
 main.d \
 SoundEffects.d
 
 C_DEPS_AS_ARGS +=  \
 io.d \
 Joystick.d \
+LED_Matrix.d \
 main.d \
 SoundEffects.d
 
@@ -95,6 +100,13 @@ LINKER_SCRIPT_DEP+=
 	
 
 ./Joystick.o: .././Joystick.c
+	@echo Building file: $<
+	@echo Invoking: AVR/GNU C Compiler : 5.4.0
+	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega1284 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\gcc\dev\atmega1284" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
+	@echo Finished building: $<
+	
+
+./LED_Matrix.o: .././LED_Matrix.c
 	@echo Building file: $<
 	@echo Invoking: AVR/GNU C Compiler : 5.4.0
 	$(QUOTE)C:\Program Files (x86)\Atmel\Studio\7.0\toolchain\avr8\avr8-gnu-toolchain\bin\avr-gcc.exe$(QUOTE)  -x c -funsigned-char -funsigned-bitfields -DDEBUG  -I"C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\include"  -O1 -ffunction-sections -fdata-sections -fpack-struct -fshort-enums -mrelax -g2 -Wall -mmcu=atmega1284 -B "C:\Program Files (x86)\Atmel\Studio\7.0\Packs\atmel\ATmega_DFP\1.3.300\gcc\dev\atmega1284" -c -std=gnu99 -MD -MP -MF "$(@:%.o=%.d)" -MT"$(@:%.o=%.d)" -MT"$(@:%.o=%.o)"   -o "$@" "$<" 
