@@ -123,13 +123,48 @@ void convertPieceToInactive(Tetromino* active, Gameboard* inactive){
 	}
 }
 
+int deletedAFilledRowAndSlidDown(Gameboard* inactive){
+	unsigned char rowDeleteFlag;
+	for (int i = 15; i>= 0; i--){
+			rowDeleteFlag = 1;
+			for(int j = 0; j < 8; j++){
+				if(!(inactive->board[j][i])){rowDeleteFlag = 0;}
+			}
+			if(rowDeleteFlag){
+				for(int k = i; k > 0; k--){
+					for(int m = 0; m < 8; m++){
+						inactive->board[m][k]=inactive->board[m][k-1];
+					}
+				}
+				for(int k = 0; k < 8; k++){
+					inactive->board[k][0] = 0;	
+				}
+				return 1;
+			}
+	}
+	return 0;
+}
 
 //for display
 void combinePieceAndBoardIntoImage(	RGB_8x16_Frame* next_frame_ptr,
 									Tetromino* piece, Gameboard* board){
-										
-
-									}
+	//clear frame
+	for(int i = 0; i < 8; i++){
+		for(int j = 0; j < 16; j++){
+			next_frame_ptr->frame[i][j] = 0;
+		}	
+	}
+	//put 4 active tetromino squares in using GREEN
+	for (int i = 0; i <4; i++){
+		next_frame_ptr->frame[piece->coordinates[i][0] + piece->x_coordinate][piece->coordinates[i][1] + piece->y_coordinate] |= (1 << RGB_GREEN_BIT);		
+	}
+	//put all 8*16 inactive values in using BLUE
+	for (int i = 0; i < 8; i++){
+		for(int j = 0; j < 16; j++){
+			if(board->board[i][j]){next_frame_ptr->frame[i][j] |= (1 << RGB_BLUE_BIT);}
+		}
+	}
+}
 
 
 Tetromino* createTetromino(unsigned char type){

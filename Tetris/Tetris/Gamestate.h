@@ -1,5 +1,3 @@
-
-
 #ifndef GAMESTATE_H_
 #define GAMESTATE_H_
 
@@ -21,7 +19,7 @@ typedef struct Gameboard{
 	unsigned char board[8][16];
 }Gameboard;
 
-
+Tetromino* createTetromino(unsigned char type);
 //natural behavior
 void checkDownAndDo(Tetromino* active, Gameboard* inactive);
 //user manipulation 
@@ -33,5 +31,6 @@ void convertPieceToInactive(Tetromino* active, Gameboard* inactive);
 
 void combinePieceAndBoardIntoImage(RGB_8x16_Frame* next_frame_ptr, Tetromino* piece, Gameboard* board);
 int checkLoss(Gameboard* inactive);
+int deleteAllFilledRowsAndSlideDown(Gameboard* inactive);
 
 #endif 

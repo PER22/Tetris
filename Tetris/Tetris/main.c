@@ -21,8 +21,7 @@ unsigned char tmpB = 0x00;
 unsigned char tmpD = 0x00;
 unsigned short myADC = 0x0000;
 
-#define LOSS_CONDITION 1
-unsigned char lostYet = 0x00;
+unsigned char lostYet = 0;
 
 
 char LCD_msg[33];
@@ -156,46 +155,60 @@ void LED_Tick(){
 	pulseColumn(count++, *current_RGB_FramePtr);
 	
 }
-	//call pulseColumn every  1 ms
+
+	
 void Gamestate_Tick(){
 	static int count = 0;
-	if(count == 200 
-	|| count == 400 
-	|| count == 600 
-	|| count == 800 
-	|| count == 1000){
-		 //switch based on joystick 
-		 //up
-			if(currentJoystickFramePtr->Y_direction == UP){
-				checkRotateAndDo(activeTile,board);
-				checkRotateAndDo(activeTile,board);
-				checkRotateAndDo(activeTile,board);
-			}
-		//down
-			else if(currentJoystickFramePtr->Y_direction == DOWN){
-				checkRotateAndDo(activeTile,board);
-			}
-// 		//right
- 			else if(currentJoystickFramePtr->X_direction== RIGHT){checkRightAndDo(activeTile,board);}	
-// 		//left
- 			else if(currentJoystickFramePtr->X_direction== RIGHT){checkLeftAndDo(activeTile,board);} 
-			//moves done
-		
-			//check that new board isnt an outright loss
-			lostYet = checkLoss(board);
-			//check to see if the active shape should be made inactive and a new one summoned;
-			for(int i = 0; i < 4; i++){
-
-	
-			}
-			//check for a row to be deleted	
-
-			//reset count if needed
-			if(count == 1000){count = 0;}
-		
+	count++;
+	if(count == 1000){
+		checkDownAndDo(activeTile,board);//move down 1 square every second;
+		count = 0;//reset count
 	}
+	if(!lostYet){
+		if(count == 200 
+		|| count == 400 
+		|| count == 600 
+		|| count == 800 
+		|| count == 0){
+			 //switch based on joystick 
+			 //up
+				if(currentJoystickFramePtr->Y_direction == UP){
+					checkRotateAndDo(activeTile,board);
+					checkRotateAndDo(activeTile,board);
+					checkRotateAndDo(activeTile,board);
+				}
+			//down
+				else if(currentJoystickFramePtr->Y_direction == DOWN){
+					checkRotateAndDo(activeTile,board);
+				}
+	// 		//right
+ 				else if(currentJoystickFramePtr->X_direction== RIGHT){checkRightAndDo(activeTile,board);}	
+	// 		//left
+ 				else if(currentJoystickFramePtr->X_direction== LEFT){checkLeftAndDo(activeTile,board);} 
+				//moves done
+		
+				//check that new board isn't an outright loss
+				lostYet = checkLoss(board);
+				//check to see if the active shape should be made inactive and a new one summoned;
+				for(int i = 0; i < 4; i++){
+					int y_coord = activeTile->coordinates[i][1] + activeTile->y_coordinate;
+					if(y_coord == 15){convertPieceToInactive(activeTile, board);free(activeTile);
+						activeTile = createTetromino(rand()%5); break;}
+					int x_coord = activeTile->coordinates[i][0] + activeTile->x_coordinate;
+					if(board->board[x_coord][y_coord + 1]){convertPieceToInactive(activeTile, board); free(activeTile);
+						activeTile = createTetromino(rand()%5); break;}
+				}
+				//check for a row to be deleted	
+				deletedAFilledRowAndSlidDown(board);
+				combinePieceAndBoardIntoImage(next_RGB_FramePtr,
+				activeTile, board);
+				
+				
+		 }else{ return;}
+	}else{//lost
+		
 	
-	else{count++; return;}
+	}
 }
 
 
@@ -224,6 +237,9 @@ int main(void)
 	current_RGB_FramePtr = (RGB_8x16_Frame*) malloc(sizeof(RGB_8x16_Frame));
 	next_RGB_FramePtr = (RGB_8x16_Frame*) malloc(sizeof(RGB_8x16_Frame));
 	
+	board = (Gameboard*) malloc(sizeof(Gameboard));
+	activeTile = createTetromino(rand()%5);
+	
 	//TEST CODE
 // 	for (int i= 0; i < 8; i++){
 // 		for(int j = 0; j < 16; j++){
@@ -245,7 +261,7 @@ int main(void)
 // 			}
 // 		}
 // 	}
-// 	
+	
 	//timing
 	TimerSet(1);
 	TimerOn();
