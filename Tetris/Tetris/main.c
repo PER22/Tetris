@@ -173,9 +173,9 @@ void Gamestate_Tick(){
 			 //switch based on joystick 
 			 //up
 				if(currentJoystickFramePtr->Y_direction == UP){
-					checkRotateAndDo(activeTile,board);
-					checkRotateAndDo(activeTile,board);
-					checkRotateAndDo(activeTile,board);
+// 					checkRotateAndDo(activeTile,board);
+// 					checkRotateAndDo(activeTile,board);
+// 					checkRotateAndDo(activeTile,board);
 				}
 			//down
 				else if(currentJoystickFramePtr->Y_direction == DOWN){
@@ -185,7 +185,7 @@ void Gamestate_Tick(){
  				else if(currentJoystickFramePtr->X_direction== RIGHT){checkRightAndDo(activeTile,board);}	
 	// 		//left
  				else if(currentJoystickFramePtr->X_direction== LEFT){checkLeftAndDo(activeTile,board);} 
-				else if(currentJoystickFramePtr->click){checkRotateAndDo(activeTile,board);}
+				if(currentJoystickFramePtr->click){checkRotateAndDo(activeTile,board);}
 				//moves done
 		
 				//check that new board isn't an outright loss
@@ -209,8 +209,7 @@ void Gamestate_Tick(){
 				}
 				//check for a row to be deleted	
 				deletedAFilledRowAndSlidDown(board);
-				combinePieceAndBoardIntoImage(next_RGB_FramePtr,
-				activeTile, board);
+				combinePieceAndBoardIntoImage(next_RGB_FramePtr, activeTile, board);
 				
 				
 		 }else{ return;}
@@ -236,7 +235,6 @@ void Gamestate_Tick(){
 	
 	}
 }
-
 
 
 
@@ -268,35 +266,12 @@ int main(void)
 	board = (Gameboard*) malloc(sizeof(Gameboard));
 	activeTile = createTetromino(rand()%5);
 	
-	//TEST CODE
-// 	for (int i= 0; i < 8; i++){
-// 		for(int j = 0; j < 16; j++){
-// 			if((i+j) % 2 == 0){
-// 				current_RGB_FramePtr->frame[i][j] = (1 << RGB_BLUE_BIT);
-// 			}
-// 			else{
-// 				current_RGB_FramePtr->frame[i][j] = (1 << RGB_BLUE_BIT);
-// 			}
-// 		}
-// 	}
-// 	for (int i= 0; i < 8; i++){
-// 		for(int j = 0; j < 16; j++){
-// 			if((i+j) % 2 == 0){
-// 				next_RGB_FramePtr->frame[i][j] = (1 << RGB_GREEN_BIT);
-// 			}
-// 			else{
-// 				next_RGB_FramePtr->frame[i][j] = (1 << RGB_GREEN_BIT);
-// 			}
-// 		}
-// 	}
-	
 	//timing
 	TimerSet(1);
 	TimerOn();
     while (1){
 		Joystick_Tick();
-		Gamestate_Tick(); //TODO
-		//SoundEffect_Tick();
+		Gamestate_Tick(); 
 		LED_Tick();
 		while(!TimerFlag);
 		TimerFlag = 0;

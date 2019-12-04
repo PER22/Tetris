@@ -4,44 +4,38 @@
 const signed char pieceShapes[5][4][2]={
 	
 	{{0,0},{1,0},{1,1},{0,1}}, //square
-	{{0,0},{0,1},{0,2},{0,3}}, //line
+	{{0,-1},{0,0},{0,1},{0,2}}, //line
 	{{0,0},{0,-1},{0,-2},{1,0}}, //L-shape
 	{{0,0},{0,-1},{0,1},{1,0}}, //triangle
-	{{0,0},{0,-1},{1,0},{1,1}}
-};//bent
+	{{0,0},{0,-1},{1,0},{1,1}}//bent
+};
 
 void checkDownAndDo(Tetromino* active, Gameboard* inactive){
-	signed char tempActive[4][2];
 	for(int i = 0; i < 4; i++){
-		tempActive[i][0] = active->coordinates[i][0];
-		tempActive[i][1] = active->coordinates[i][1] + 1;
-		
-		if(tempActive[i][0] + active->x_coordinate > 7
-		|| tempActive[i][0] + active->x_coordinate < 0
-		|| tempActive[i][1] + active->y_coordinate > 15
-		|| tempActive[i][1] + active->y_coordinate < 0){
+		if(
+		   (active->coordinates[i][0] + active->x_coordinate )     > 7
+		|| (active->coordinates[i][0] + active->x_coordinate )     < 0
+		|| (active->coordinates[i][1] + active->y_coordinate + 1)  > 15
+		|| (active->coordinates[i][1] + active->y_coordinate + 1)  < 0 ){
 			return; //fail
 		}
 		//check gameboard
-		else if(inactive->board[tempActive[i][0]+ active->x_coordinate][tempActive[i][1]+ active->y_coordinate]){
+		else if(inactive->board[active->coordinates[i][0] + active->x_coordinate][active->coordinates[i][1] + active->y_coordinate + 1]){
 			return;//fail
 		}
 	}
 	//copy
-	for(int i = 0; i < 4; i++){
-		active->coordinates[i][0] = tempActive[i][0];
-		active->coordinates[i][1] = tempActive[i][1];
-	}
+	active->y_coordinate++;
 }
 //user manipulation
 void checkRotateAndDo(Tetromino* active, Gameboard* inactive){
 	//do temp rotate that might be illegal
 	signed char tempActive[4][2];
 	for(int i = 0; i < 4; i++){
-		tempActive[i][0] = -1 * active->coordinates[i][1];
-		tempActive[i][1] = active->coordinates[i][0];
+		tempActive[i][0] =  active->coordinates[i][1];
+		tempActive[i][1] = -1 * active->coordinates[i][0];
 		//check perimeter
-		if(tempActive[i][0] + active->x_coordinate > 7 
+		if(tempActive[i][0] + active->x_coordinate > 7//fix 
 		|| tempActive[i][0] + active->x_coordinate < 0 
 		|| tempActive[i][1] + active->y_coordinate > 15  
 		|| tempActive[i][1] + active->y_coordinate < 0){
@@ -62,50 +56,39 @@ void checkRotateAndDo(Tetromino* active, Gameboard* inactive){
 }
 
 void checkLeftAndDo(Tetromino* active, Gameboard* inactive){
-	signed char tempActive[4][2];
-	for(int i = 0; i < 4; i++){
-		tempActive[i][0] = active->coordinates[i][0] - 1;
-		tempActive[i][1] = active->coordinates[i][1];
-		
-		if(tempActive[i][0] + active->x_coordinate > 7
-		|| tempActive[i][0] + active->x_coordinate < 0
-		|| tempActive[i][1] + active->y_coordinate > 15
-		|| tempActive[i][1] + active->y_coordinate < 0){
-			return; //fail
+		for(int i = 0; i < 4; i++){
+			if(
+			   (active->coordinates[i][0] + active->x_coordinate -1)> 7
+			|| (active->coordinates[i][0] + active->x_coordinate -1)< 0
+			|| (active->coordinates[i][1] + active->y_coordinate )  > 15
+			|| (active->coordinates[i][1] + active->y_coordinate )  < 0 ){
+				return; //fail
+			}
+			//check gameboard
+			else if(inactive->board[active->coordinates[i][0] + active->x_coordinate - 1][active->coordinates[i][1] + active->y_coordinate]){
+				return;//fail
+			}
 		}
-		//check gameboard
-		else if(inactive->board[tempActive[i][0] + active->x_coordinate][tempActive[i][1]+ active->y_coordinate]){
-			return;//fail
-		}
-	}
-	for(int i = 0; i < 4; i++){
-		active->coordinates[i][0] = tempActive[i][0];
-		active->coordinates[i][1] = tempActive[i][1];
-	}	
+		//copy
+		active->x_coordinate--;
 }
 	
 void checkRightAndDo(Tetromino* active, Gameboard* inactive){
-	signed char tempActive[4][2];
-	for(int i = 0; i < 4; i++){
-		tempActive[i][0] = active->coordinates[i][0] + 1;
-		tempActive[i][1] = active->coordinates[i][1];
-			
-		if(tempActive[i][0] + active->x_coordinate > 7
-		|| tempActive[i][0] + active->x_coordinate < 0
-		|| tempActive[i][1] + active->y_coordinate > 15
-		|| tempActive[i][1] + active->y_coordinate < 0){
-			return; //fail
+		for(int i = 0; i < 4; i++){
+			if(
+			(active->coordinates[i][0] + active->x_coordinate + 1)    > 7
+			|| (active->coordinates[i][0] + active->x_coordinate + 1) < 0
+			|| (active->coordinates[i][1] + active->y_coordinate)  > 15
+			|| (active->coordinates[i][1] + active->y_coordinate)  < 0 ){
+				return; //fail
+			}
+			//check gameboard
+			else if(inactive->board[active->coordinates[i][0] + active->x_coordinate + 1][active->coordinates[i][1] + active->y_coordinate]){
+				return;//fail
+			}
 		}
-		//check gameboard
-		else if(inactive->board[tempActive[i][0] + active->x_coordinate][tempActive[i][1]+ active->y_coordinate]){
-			return;//fail
-		}
-	}
-	for(int i = 0; i < 4; i++){
-		active->coordinates[i][0] = tempActive[i][0];
-		active->coordinates[i][1] = tempActive[i][1];
-	}
-	
+		//copy
+		active->x_coordinate++;
 }
 
 int checkLoss(Gameboard* inactive){

@@ -31,7 +31,8 @@ void convertPieceToInactive(Tetromino* active, Gameboard* inactive);
 
 void combinePieceAndBoardIntoImage(RGB_8x16_Frame* next_frame_ptr, Tetromino* piece, Gameboard* board);
 int checkLoss(Gameboard* inactive);
-int deleteAllFilledRowsAndSlideDown(Gameboard* inactive);
+int deletedAFilledRowAndSlidDown(Gameboard* inactive);
+
 
 void losingDisplay(RGB_8x16_Frame* next_frame_ptr);
 #endif 
