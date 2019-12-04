@@ -29,7 +29,9 @@ RGB_8x16_Frame* current_RGB_FramePtr;
 RGB_8x16_Frame* next_RGB_FramePtr;
 
 
-SoundEffect* Effects[6];
+
+
+//SoundEffect* Effects[6];
 
 
 
@@ -137,6 +139,32 @@ void Joystick_Tick(){
 	nextJoystickFramePtr = temp;
 }
 
+void LED_Tick(){
+	static int count = 0;
+	//update frame every 8 ms
+	if(count == 20){ RGB_8x16_Frame tmpFrame = *current_RGB_FramePtr;
+		*current_RGB_FramePtr = *next_RGB_FramePtr;
+		*next_RGB_FramePtr = tmpFrame;
+		count = 0;
+	}
+	pulseColumn(count++, *current_RGB_FramePtr);
+	
+}
+	//call pulseColumn every  1 ms
+	
+	
+	
+
+
+void gamestateTick(){
+	
+	
+	
+	
+	
+}
+
+
 int main(void)
 {
 	DDRA = 0x00;
@@ -168,7 +196,7 @@ int main(void)
 				current_RGB_FramePtr->frame[i][j] = (1 << RGB_BLUE_BIT);
 			}
 			else{
-				current_RGB_FramePtr->frame[i][j] = (1 << RGB_GREEN_BIT);
+				current_RGB_FramePtr->frame[i][j] = (1 << RGB_BLUE_BIT);
 			}
 		}
 	}
@@ -178,7 +206,7 @@ int main(void)
 				next_RGB_FramePtr->frame[i][j] = (1 << RGB_GREEN_BIT);
 			}
 			else{
-				next_RGB_FramePtr->frame[i][j] = (1 << RGB_BLUE_BIT);
+				next_RGB_FramePtr->frame[i][j] = (1 << RGB_GREEN_BIT);
 			}
 		}
 	}
@@ -204,26 +232,18 @@ int main(void)
 	//timing
 	TimerSet(1);
 	unsigned int cnt = 0;
-	unsigned int cnt2 = 0;
+	
 	TimerOn();
     while (1){
-	//	Joystick_Tick();
-	//	testDisplayJoystickADC(); //Working and not needed
+	Joystick_Tick();
+	//testDisplayJoystickADC(); //Working and not needed
 		//Gamestate_Tick(); //TODO
 		
 		//SoundEffect_Tick();
-		if(cnt2 == 1000){ RGB_8x16_Frame tmpFrame = *current_RGB_FramePtr;
-			*current_RGB_FramePtr = *next_RGB_FramePtr;
-			*next_RGB_FramePtr = tmpFrame;
-			cnt2 = 0;}
-		
-		cnt2++;	
-		if(cnt == 8){pulseColumn(0, *current_RGB_FramePtr);cnt = 0;}
-		else{pulseColumn(cnt++, *current_RGB_FramePtr);}
+		LED_Tick();
 		
 		while(!TimerFlag);
 		TimerFlag = 0;
     }
 }
-
 

@@ -70,6 +70,13 @@ void pulseColumn(unsigned char column, RGB_8x16_Frame frame){
 		else if(frame.frame[column][i+8] & (1 << RGB_GREEN_BIT)){register4 &= ~(1 << i); }
 
 		else if(frame.frame[column][i+8] & (1 << RGB_BLUE_BIT)){register2 &= ~(1 << (i+8));}
+		
+		//matrix 1			
+		if(frame.frame[column][i] & (1 << RGB_RED_BIT)){register1 &= ~(1 << i);}
+		
+		else if(frame.frame[column][i] & (1 << RGB_GREEN_BIT)){register3 &= ~(1 << i); }
+
+		else if(frame.frame[column][i] & (1 << RGB_BLUE_BIT)){register1 &= ~(1 << (i+8));}
 	}
 	
 	
