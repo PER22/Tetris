@@ -11,8 +11,8 @@
 
 typedef struct Tetromino{
 	signed char coordinates[4][2];
-	unsigned char x_coordinate;
-	unsigned char y_coordinate;	
+	signed char x_coordinate;
+	signed char y_coordinate;	
 }Tetromino;
 
 typedef struct Gameboard{
@@ -33,4 +33,5 @@ void combinePieceAndBoardIntoImage(RGB_8x16_Frame* next_frame_ptr, Tetromino* pi
 int checkLoss(Gameboard* inactive);
 int deleteAllFilledRowsAndSlideDown(Gameboard* inactive);
 
+void losingDisplay(RGB_8x16_Frame* next_frame_ptr);
 #endif 

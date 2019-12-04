@@ -210,6 +210,14 @@ Tetromino* createTetromino(unsigned char type){
 	return tet;
 }
 
+void losingDisplay(RGB_8x16_Frame* next_frame_ptr){
+	for(int i = 0; i < 8; i++){
+		for(int j = 0; j < 16; j++){
+			next_frame_ptr->frame[i][j] = (1 << RGB_RED_BIT);
+		}
+	}
+}
+
 
 
 

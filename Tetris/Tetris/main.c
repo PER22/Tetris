@@ -179,12 +179,13 @@ void Gamestate_Tick(){
 				}
 			//down
 				else if(currentJoystickFramePtr->Y_direction == DOWN){
-					checkRotateAndDo(activeTile,board);
+					checkDownAndDo(activeTile,board);
 				}
 	// 		//right
  				else if(currentJoystickFramePtr->X_direction== RIGHT){checkRightAndDo(activeTile,board);}	
 	// 		//left
  				else if(currentJoystickFramePtr->X_direction== LEFT){checkLeftAndDo(activeTile,board);} 
+				else if(currentJoystickFramePtr->click){checkRotateAndDo(activeTile,board);}
 				//moves done
 		
 				//check that new board isn't an outright loss
@@ -192,11 +193,19 @@ void Gamestate_Tick(){
 				//check to see if the active shape should be made inactive and a new one summoned;
 				for(int i = 0; i < 4; i++){
 					int y_coord = activeTile->coordinates[i][1] + activeTile->y_coordinate;
-					if(y_coord == 15){convertPieceToInactive(activeTile, board);free(activeTile);
-						activeTile = createTetromino(rand()%5); break;}
+					if(y_coord == 15){
+						convertPieceToInactive(activeTile, board);
+						free(activeTile);
+						activeTile = createTetromino(rand()%5); 
+						break;
+					}
 					int x_coord = activeTile->coordinates[i][0] + activeTile->x_coordinate;
-					if(board->board[x_coord][y_coord + 1]){convertPieceToInactive(activeTile, board); free(activeTile);
-						activeTile = createTetromino(rand()%5); break;}
+					if(board->board[x_coord][y_coord + 1]){
+						convertPieceToInactive(activeTile, board); 
+						free(activeTile);
+						activeTile = createTetromino(rand()%5); 
+						break;
+					}
 				}
 				//check for a row to be deleted	
 				deletedAFilledRowAndSlidDown(board);
@@ -205,11 +214,30 @@ void Gamestate_Tick(){
 				
 				
 		 }else{ return;}
-	}else{//lost
+	}else{
+		losingDisplay(next_RGB_FramePtr);//lost
+		if(currentJoystickFramePtr->click){
+			lostYet = 0;
+			for(int i = 0; i < 8; i++){
+				for(int j = 0; j < 16; j++){
+					board->board[i][j] = 0;
+					activeTile = createTetromino(rand()%5);
+				}
+			}
+			for(int i = 0; i < 8; i++){
+				for(int j = 0; j < 16; j++){
+					next_RGB_FramePtr->frame[i][j] = 0;
+					current_RGB_FramePtr->frame[i][j] = 0;
+				}
+			}
+			
+		}
 		
 	
 	}
 }
+
+
 
 
 
