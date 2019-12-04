@@ -9,6 +9,7 @@
 						//to desired logical values;
 #include "SoundEffects.h"
 #include "LED_Matrix.h"
+#include "Gamestate.h"
 						
 volatile unsigned char TimerFlag = 0;
 unsigned long _avr_timer_M = 1;
@@ -20,6 +21,10 @@ unsigned char tmpB = 0x00;
 unsigned char tmpD = 0x00;
 unsigned short myADC = 0x0000;
 
+#define LOSS_CONDITION 1
+unsigned char lostYet = 0x00;
+
+
 char LCD_msg[33];
 
 Joystick_Frame* currentJoystickFramePtr;
@@ -28,14 +33,10 @@ Joystick_Frame* nextJoystickFramePtr;
 RGB_8x16_Frame* current_RGB_FramePtr;
 RGB_8x16_Frame* next_RGB_FramePtr;
 
-
-
+Tetromino* activeTile;
+Gameboard* board;
 
 //SoundEffect* Effects[6];
-
-
-
-
 
 void testDisplayJoystickADC(){
 	//I know this code is ugly, its really just a test bench to see 
@@ -113,7 +114,6 @@ void TimerISR(){
 	TimerFlag = 1;
 }
 
-
 //C programmer will not call this ISR, but TimerISR instead;
 ISR(TIMER1_COMPA_vect){
 	_avr_timer_cntcurr--;
@@ -128,17 +128,23 @@ void TimerSet(unsigned long M){
 	_avr_timer_cntcurr = _avr_timer_M;
 }
 
+              
 void Joystick_Tick(){
+	static int count = 0;
+	if (count == 100){
+		Joystick_Read(nextJoystickFramePtr);
+		Joystick_Process_Raw(nextJoystickFramePtr);
+		//COPY POINTER BEFORE SWAPPING
+		Joystick_Frame* temp = currentJoystickFramePtr;
+		//SWAP BUFFER
+		currentJoystickFramePtr = nextJoystickFramePtr;
+		nextJoystickFramePtr = temp;
+		count = 0;
+	}
+	else{count++; return;}
 	//READ + POPULATE always into the next frame before swapping buffer
-	Joystick_Read(nextJoystickFramePtr);	
-	Joystick_Process_Raw(nextJoystickFramePtr);	
-	//COPY POINTER BEFORE SWAPPING
-	Joystick_Frame* temp = currentJoystickFramePtr;
-	//SWAP BUFFER	
-	currentJoystickFramePtr = nextJoystickFramePtr;
-	nextJoystickFramePtr = temp;
 }
-
+			                                                                                        
 void LED_Tick(){
 	static int count = 0;
 	//update frame every 8 ms
@@ -151,18 +157,47 @@ void LED_Tick(){
 	
 }
 	//call pulseColumn every  1 ms
-	
-	
-	
+void Gamestate_Tick(){
+	static int count = 0;
+	if(count == 200 
+	|| count == 400 
+	|| count == 600 
+	|| count == 800 
+	|| count == 1000){
+		 //switch based on joystick 
+		 //up
+			if(currentJoystickFramePtr->Y_direction == UP){
+				checkRotateAndDo(activeTile,board);
+				checkRotateAndDo(activeTile,board);
+				checkRotateAndDo(activeTile,board);
+			}
+		//down
+			else if(currentJoystickFramePtr->Y_direction == DOWN){
+				checkRotateAndDo(activeTile,board);
+			}
+// 		//right
+ 			else if(currentJoystickFramePtr->X_direction== RIGHT){checkRightAndDo(activeTile,board);}	
+// 		//left
+ 			else if(currentJoystickFramePtr->X_direction== RIGHT){checkLeftAndDo(activeTile,board);} 
+			//moves done
+		
+			//check that new board isnt an outright loss
+			lostYet = checkLoss(board);
+			//check to see if the active shape should be made inactive and a new one summoned;
+			for(int i = 0; i < 4; i++){
 
+	
+			}
+			//check for a row to be deleted	
 
-void gamestateTick(){
+			//reset count if needed
+			if(count == 1000){count = 0;}
+		
+	}
 	
-	
-	
-	
-	
+	else{count++; return;}
 }
+
 
 
 int main(void)
@@ -190,58 +225,35 @@ int main(void)
 	next_RGB_FramePtr = (RGB_8x16_Frame*) malloc(sizeof(RGB_8x16_Frame));
 	
 	//TEST CODE
-	for (int i= 0; i < 8; i++){
-		for(int j = 0; j < 16; j++){
-			if((i+j) % 2 == 0){
-				current_RGB_FramePtr->frame[i][j] = (1 << RGB_BLUE_BIT);
-			}
-			else{
-				current_RGB_FramePtr->frame[i][j] = (1 << RGB_BLUE_BIT);
-			}
-		}
-	}
-	for (int i= 0; i < 8; i++){
-		for(int j = 0; j < 16; j++){
-			if((i+j) % 2 == 0){
-				next_RGB_FramePtr->frame[i][j] = (1 << RGB_GREEN_BIT);
-			}
-			else{
-				next_RGB_FramePtr->frame[i][j] = (1 << RGB_GREEN_BIT);
-			}
-		}
-	}
-	
-	
-	
-	
-	
-	
-	//test sound effects, in the future these will be replaced 
-	//with the sound effects for each action/event
-// 	for(int i = 0; i < 6; i++){
-// 		//initialize array of SoundEffects
-// 		Effects[i] = (SoundEffect*) malloc(sizeof(SoundEffect));	
-// 		Effects[i]->length = 10;
-// 		//Initialize each of their pitch arrays
-// 		Effects[i]->pitches_ptr = (double*) malloc(Effects[i]->length * sizeof(double));
-// 		for(int j = 0; j < Effects[i]->length; j++){
-// 			Effects[i]->pitches_ptr[j] = i*150.0; 
+// 	for (int i= 0; i < 8; i++){
+// 		for(int j = 0; j < 16; j++){
+// 			if((i+j) % 2 == 0){
+// 				current_RGB_FramePtr->frame[i][j] = (1 << RGB_BLUE_BIT);
+// 			}
+// 			else{
+// 				current_RGB_FramePtr->frame[i][j] = (1 << RGB_BLUE_BIT);
+// 			}
 // 		}
 // 	}
-	
+// 	for (int i= 0; i < 8; i++){
+// 		for(int j = 0; j < 16; j++){
+// 			if((i+j) % 2 == 0){
+// 				next_RGB_FramePtr->frame[i][j] = (1 << RGB_GREEN_BIT);
+// 			}
+// 			else{
+// 				next_RGB_FramePtr->frame[i][j] = (1 << RGB_GREEN_BIT);
+// 			}
+// 		}
+// 	}
+// 	
 	//timing
 	TimerSet(1);
-	unsigned int cnt = 0;
-	
 	TimerOn();
     while (1){
-	Joystick_Tick();
-	//testDisplayJoystickADC(); //Working and not needed
-		//Gamestate_Tick(); //TODO
-		
+		Joystick_Tick();
+		Gamestate_Tick(); //TODO
 		//SoundEffect_Tick();
 		LED_Tick();
-		
 		while(!TimerFlag);
 		TimerFlag = 0;
     }

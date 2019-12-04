@@ -18,10 +18,10 @@ typedef struct RGB_8x16_Frame{
 }RGB_8x16_Frame;
 
 
-inline void setRed(RGB_Square* );
-inline void setGreen(RGB_Square* );
-inline void setBlue(RGB_Square* );
-inline void clearAll(RGB_Square* );
+void setRed(RGB_Square* );
+void setGreen(RGB_Square* );
+void setBlue(RGB_Square* );
+void clearAll(RGB_Square* );
 
 void pulseColumn(unsigned char column, RGB_8x16_Frame);
 

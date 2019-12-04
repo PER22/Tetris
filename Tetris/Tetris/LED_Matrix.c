@@ -1,17 +1,16 @@
 #include "LED_Matrix.h"
 #include "io.h"
 
-inline void setRed(RGB_Square* ptr){
+void setRed(RGB_Square* ptr){
 	*ptr = (1 << RGB_RED_BIT);
 }
-
-inline void setGreen(RGB_Square* ptr){
+void setGreen(RGB_Square* ptr){
 	*ptr = (1 << RGB_GREEN_BIT);
 }
-inline void setBlue(RGB_Square* ptr){
+ void setBlue(RGB_Square* ptr){
 	*ptr = (1 << RGB_BLUE_BIT);
 }
-inline void clearAll(RGB_Square* ptr){
+void clearAll(RGB_Square* ptr){
 	*ptr = 0;
 	
 }
